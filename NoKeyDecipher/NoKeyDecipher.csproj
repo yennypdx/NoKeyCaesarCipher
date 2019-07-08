@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F5104F72-DFD4-475B-A648-022CD0626716}</ProjectGuid>
+    <ProjectGuid>{2D94A7A7-B17C-43C7-8882-C7F342C50DF4}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MonoAlphaDecipher</RootNamespace>
-    <AssemblyName>MonoAlphaDecipher</AssemblyName>
+    <RootNamespace>NoKeyDecipher</RootNamespace>
+    <AssemblyName>NoKeyDecipher</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -22,18 +22,18 @@ namespace MonoAlphaDecipher
             String decryptedText = "";
             var startIndex = 0;
 
-            var test = 0;
+            //var test = 0;
             var decryptedCorrect = false;
             var key = 0;
             while (decryptedCorrect == false || key < 26)
             {
                 foreach (char testChar in encryptedText)
                 {
-                    var asciiTestChar = (int) testChar;
+                    var asciiTestChar = (int)testChar;
                     asciiTestChar = (asciiTestChar - 97);
                     asciiTestChar = (asciiTestChar + key) % 26;
                     asciiTestChar += 97;
-                    var realTestChar = (char) asciiTestChar;
+                    var realTestChar = (char)asciiTestChar;
                     decryptedText += realTestChar.ToString();
                     startIndex++;
                 }

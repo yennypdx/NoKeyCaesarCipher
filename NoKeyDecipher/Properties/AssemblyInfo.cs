@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MonoAlphaDecipher")]
+[assembly: AssemblyTitle("NoKeyDecipher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MonoAlphaDecipher")]
+[assembly: AssemblyProduct("NoKeyDecipher")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f5104f72-dfd4-475b-a648-022cd0626716")]
+[assembly: Guid("2d94a7a7-b17c-43c7-8882-c7f342c50df4")]
 
 // Version information for an assembly consists of the following four values:
 //
