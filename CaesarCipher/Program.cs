@@ -9,8 +9,8 @@ namespace CaesarCipher
 {
     public class Program
     {
-        private static readonly string textFile = "samsung.txt";
-        private static readonly string textFileDecrypted = "encripted.txt";
+        private static readonly string textFile = @"F:\Cryptography\Assignment1\CaesarCipher\samsung.txt";
+        private static readonly string textFileDecrypted = @"F:\Cryptography\Assignment1\CaesarCipher\encrypted.txt";
         public static string TextFile => textFile;
         public static string TextFileDecrypted => textFileDecrypted;
 
@@ -19,7 +19,7 @@ namespace CaesarCipher
             var userKey = string.Empty;
             var userChoice = string.Empty;
             var userFileChoice = string.Empty;
-            var userFilePath = string.Empty;
+            var userTextInput = string.Empty;
             var repeat = "y";
 
             Console.WriteLine("----------------------------------------------------------------------");
@@ -36,12 +36,13 @@ namespace CaesarCipher
                     Console.WriteLine("Would you like to read already existing file (y/n)? ");
                     Console.Write(">> ");
                     userFileChoice = Console.ReadLine();
-                    if (userFileChoice == "n"){
-                        Console.WriteLine("Enter the file path here: ");
+
+                    if (userFileChoice == "n") { 
+                        Console.WriteLine("Enter your text here: ");
                         Console.Write(">> ");
-                        userFilePath = Console.ReadLine();
+                        userTextInput = Console.ReadLine();
                         Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
-                        TextFileReader(userFilePath);
+                        CaesarEncryptionEngine(userTextInput, Int32.Parse(userKey));
                     }else{
                         Console.WriteLine("\nProgram is using a stored file called: samsung.txt");
                         Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
@@ -54,12 +55,13 @@ namespace CaesarCipher
                     Console.Write(">> ");
                     userFileChoice = Console.ReadLine();
                     if (userFileChoice == "n"){
-                        Console.WriteLine("Enter the file path here: ");
+                        Console.WriteLine("Enter your text here: ");
                         Console.Write(">> ");
-                        userFilePath = Console.ReadLine();
+                        userTextInput = Console.ReadLine();
                         Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
-                        TextFileReader(userFilePath);
-                    }else{
+                        CaesarDecryptionEngine(userTextInput, Int32.Parse(userKey));
+                    }
+                    else{
                         Console.WriteLine("\nProgram is using a stored file called: encrypted.txt");
                         Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
                         string dFullText = TextFileReader(TextFileDecrypted);
@@ -70,18 +72,12 @@ namespace CaesarCipher
                 Console.WriteLine("\n\nDo another with new key (y/n)? ");
                 Console.Write(">> ");
                 repeat = Console.ReadLine();
-                if (repeat != "y" || repeat != "n"){
-                    Console.WriteLine("Please enter [n] or [y]: ");
-                    Console.Write(">> ");
-                    repeat = Console.ReadLine();
-                }
             } while (repeat != "n");
         }
 
         public static string TextFileReader(string filepath)
         {
             var outText = string.Empty;
-            
             if (File.Exists(filepath)){
                 var fulltext = File.ReadAllText(filepath);
                 outText = fulltext.ToLower();
@@ -99,13 +95,17 @@ namespace CaesarCipher
             foreach (var letter in fullText)
             {
                 charToIntInAscii = (int) letter;
-                charToIntInAscii = (charToIntInAscii + key - 97) % 26 + 97;
+                charToIntInAscii = (charToIntInAscii - 97 - key) % 26;
+                if (charToIntInAscii < 0){
+                    charToIntInAscii += 26;
+                }
+                charToIntInAscii += 97;
+                
                 var singleLetter = (char) charToIntInAscii;
                 resultText.Add(singleLetter);
             }
 
-            foreach (var letter in resultText)
-            {
+            foreach (var letter in resultText){
                 Console.Write(letter);
             }
         }
@@ -115,16 +115,15 @@ namespace CaesarCipher
             var charToIntInAscii = 0;
             List<char> resultText = new List<char>();
 
-            foreach (var letter in fullText)
-            {
+            foreach (var letter in fullText){
                 charToIntInAscii = (int)letter;
-                charToIntInAscii = (charToIntInAscii - key - 97) % 26 + 97;
+                charToIntInAscii = (charToIntInAscii - 97 + key) % 26 + 97;
+
                 var singleLetter = (char)charToIntInAscii;
                 resultText.Add(singleLetter);
             }
 
-            foreach (var letter in resultText)
-            {
+            foreach (var letter in resultText){
                 Console.Write(letter);
             }
         }
