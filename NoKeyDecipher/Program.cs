@@ -21,17 +21,21 @@ namespace MonoAlphaDecipher
 
             String decryptedText = "";
 
+<<<<<<< HEAD:MonoAlphaDecipher/Program.cs
+=======
+            //var test = 0;
+>>>>>>> 540442b9bcc5e5f293abf049484d335a80132948:NoKeyDecipher/Program.cs
             var decryptedCorrect = false;
             var key = 0;
             while (decryptedCorrect == false || key < 26)
             {
                 foreach (char testChar in encryptedText)
                 {
-                    var asciiTestChar = (int) testChar;
+                    var asciiTestChar = (int)testChar;
                     asciiTestChar = (asciiTestChar - 97);
                     asciiTestChar = (asciiTestChar + key) % 26;
                     asciiTestChar += 97;
-                    var realTestChar = (char) asciiTestChar;
+                    var realTestChar = (char)asciiTestChar;
                     decryptedText += realTestChar.ToString();
                 }
 

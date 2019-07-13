@@ -10,122 +10,121 @@ namespace CaesarCipher
     public class Program
     {
         private static readonly string textFile = @"F:\Cryptography\Assignment1\CaesarCipher\samsung.txt";
+        private static readonly string textFileDecrypted = @"F:\Cryptography\Assignment1\CaesarCipher\encrypted.txt";
         public static string TextFile => textFile;
+        public static string TextFileDecrypted => textFileDecrypted;
 
         static void Main(string[] args)
         {
-            string userKey = string.Empty;
-            string userFileChoice = string.Empty;
-            string userFilePath = string.Empty;
-            string repeat = "y";
-            
+            var userKey = string.Empty;
+            var userChoice = string.Empty;
+            var userFileChoice = string.Empty;
+            var userTextInput = string.Empty;
+            var repeat = "y";
+
             Console.WriteLine("----------------------------------------------------------------------");
             Console.WriteLine(":::::::::::::::::::::::::: Caesar Encryption :::::::::::::::::::::::::");
             Console.WriteLine("----------------------------------------------------------------------");
             do{
-                Console.WriteLine("\nPlease provide us with alphabetical key you would like to use: ");
+                Console.WriteLine("\nEnter key in integer: ");
                 Console.Write(">> ");
                 userKey = Console.ReadLine();
-                Console.WriteLine("Would you like to read already existing file (y/n)? ");
+                Console.WriteLine("Would you like to [e]ncrypt or [d]ecrypt ? ");
                 Console.Write(">> ");
-                userFileChoice = Console.ReadLine();
-                if (userFileChoice == "n"){
-                    Console.WriteLine("Enter the file path here: ");
+                userChoice = Console.ReadLine();
+                if (userChoice == "e"){
+                    Console.WriteLine("Would you like to read already existing file (y/n)? ");
                     Console.Write(">> ");
-                    userFilePath = Console.ReadLine();
-                    Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
-                    TextFileReader(userFilePath, userKey);
-                }else{
-                    Console.WriteLine("Program is using a stored file called: samsung.txt");
-                    Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
-                    TextFileReader(TextFile, userKey);
-                }
+                    userFileChoice = Console.ReadLine();
 
-                Console.WriteLine("\n\nWould you like to encrypt new file with new key (y/n)? ");
+                    if (userFileChoice == "n") { 
+                        Console.WriteLine("Enter your text here: ");
+                        Console.Write(">> ");
+                        userTextInput = Console.ReadLine();
+                        Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
+                        CaesarEncryptionEngine(userTextInput, Int32.Parse(userKey));
+                    }else{
+                        Console.WriteLine("\nProgram is using a stored file called: samsung.txt");
+                        Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
+                        string eFullText = TextFileReader(TextFile);
+                        CaesarEncryptionEngine(eFullText, Int32.Parse(userKey));
+                    }
+                    
+                }else if (userChoice == "d"){
+                    Console.WriteLine("Would you like to read already existing file (y/n)? ");
+                    Console.Write(">> ");
+                    userFileChoice = Console.ReadLine();
+                    if (userFileChoice == "n"){
+                        Console.WriteLine("Enter your text here: ");
+                        Console.Write(">> ");
+                        userTextInput = Console.ReadLine();
+                        Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
+                        CaesarDecryptionEngine(userTextInput, Int32.Parse(userKey));
+                    }
+                    else{
+                        Console.WriteLine("\nProgram is using a stored file called: encrypted.txt");
+                        Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
+                        string dFullText = TextFileReader(TextFileDecrypted);
+                        CaesarDecryptionEngine(dFullText, Int32.Parse(userKey));
+                    }
+                }
+                
+                Console.WriteLine("\n\nDo another with new key (y/n)? ");
                 Console.Write(">> ");
                 repeat = Console.ReadLine();
-                if (repeat != "y" || repeat != "n"){
-                    Console.WriteLine("Please enter [n] or [y]: ");
-                    Console.Write(">> ");
-                    repeat = Console.ReadLine();
-                }
             } while (repeat != "n");
         }
 
-        public static string RemoveDuplicates(string inputText)
+        public static string TextFileReader(string filepath)
         {
-            return new string(inputText.ToCharArray().Distinct().ToArray());
-        }
-
-        public static void TextFileReader(string filepath, string userKey)
-        {
-            string fulltext = string.Empty;
-            string capitalizedText = string.Empty;
-            string sortedUserKey = RemoveDuplicates(userKey);
-            string capSortedUserKey = sortedUserKey.ToUpper();
-
+            var outText = string.Empty;
             if (File.Exists(filepath)){
-                fulltext = File.ReadAllText(filepath);
-                capitalizedText = fulltext.ToUpper();
-
-                CaesarEncryptionEngine(capitalizedText, capSortedUserKey);
+                var fulltext = File.ReadAllText(filepath);
+                outText = fulltext.ToLower();
             }else{
                 Console.WriteLine("Failed to fetch the file");
             }
+            return outText;
         }
 
-        private static void CaesarEncryptionEngine(string capFullText, string capUserKey)
+        private static void CaesarEncryptionEngine(string fullText, int key)
         {
-            List<char> Plaintext = new List<char> { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-                'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-            List<char> Alpha = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
-                'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-            List<char> Ciphertext = new List<char>();
-            List<char> sortedAlpha = new List<char>();
-            List<char> userKeyCharList = new List<char>();
+            var charToIntInAscii = 0;
             List<char> resultText = new List<char>();
 
-            char[] tempkey = capUserKey.ToCharArray();
-            for (int i = 0; i < capUserKey.Length; i++){
-                userKeyCharList.Add(tempkey[i]);
-            }
-
-            foreach (char letter in Alpha){
-                bool match = false;
-                for (int i = 0; i < userKeyCharList.Count; i++){
-                    if (letter.Equals(userKeyCharList[i])){
-                        match = true;
-                    }
-                }
-                if (match == false){
-                    sortedAlpha.Add(letter);
-                }
-            }
-
-            Ciphertext = userKeyCharList.Concat(sortedAlpha).ToList();
-
-            var dictionary = Ciphertext.Zip(Plaintext, (k, v) => new {k, v}).ToDictionary(x => x.k, x => x.v);
-            foreach (char letter in capFullText)
+            foreach (var letter in fullText)
             {
-                bool match = false;
-                char matchValue = ' ';
-                for (int i = 0; i < dictionary.Count; i++)
-                {
-                    if (dictionary.ContainsKey(letter)){
-                        match = true;
-                        matchValue = dictionary[letter];
-                    }else if(letter.Equals(' ')){
-                        match = true;
-                        matchValue = ' ';
-                    }
+                charToIntInAscii = (int) letter;
+                charToIntInAscii = (charToIntInAscii - 97 - key) % 26;
+                if (charToIntInAscii < 0){
+                    charToIntInAscii += 26;
                 }
-                if (match == true){
-                    resultText.Add(matchValue);
-                }
+                charToIntInAscii += 97;
+                
+                var singleLetter = (char) charToIntInAscii;
+                resultText.Add(singleLetter);
             }
 
-            for (int i = 0; i < resultText.Count; i++){
-                Console.Write(resultText[i]);
+            foreach (var letter in resultText){
+                Console.Write(letter);
+            }
+        }
+
+        private static void CaesarDecryptionEngine(string fullText, int key)
+        {
+            var charToIntInAscii = 0;
+            List<char> resultText = new List<char>();
+
+            foreach (var letter in fullText){
+                charToIntInAscii = (int)letter;
+                charToIntInAscii = (charToIntInAscii - 97 + key) % 26 + 97;
+
+                var singleLetter = (char)charToIntInAscii;
+                resultText.Add(singleLetter);
+            }
+
+            foreach (var letter in resultText){
+                Console.Write(letter);
             }
         }
     }
