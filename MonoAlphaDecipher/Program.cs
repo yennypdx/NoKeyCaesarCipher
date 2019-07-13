@@ -20,9 +20,7 @@ namespace MonoAlphaDecipher
             Console.WriteLine("Encrypted: " + encryptedText);
 
             String decryptedText = "";
-            var startIndex = 0;
 
-            var test = 0;
             var decryptedCorrect = false;
             var key = 0;
             while (decryptedCorrect == false || key < 26)
@@ -35,7 +33,6 @@ namespace MonoAlphaDecipher
                     asciiTestChar += 97;
                     var realTestChar = (char) asciiTestChar;
                     decryptedText += realTestChar.ToString();
-                    startIndex++;
                 }
 
                 if (decryptedText.Contains("the"))
@@ -48,7 +45,14 @@ namespace MonoAlphaDecipher
                 key += 1;
             }
 
-            Console.WriteLine("Key found");
+            if (decryptedCorrect != true)
+            {
+            
+                Console.WriteLine("Key Not Found");
+            }
+            else
+                Console.WriteLine("Key Found");
+
             //var mostFreqLetter = encryptedText.GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key;
             //var secondMostFreqLetter = encryptedText.GroupBy(x => x).OrderByDescending(x => x.Count()).;
             //Console.WriteLine("Most Freq Used Letter: " + mostFreqLetter);
