@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 /* Part 1: Yenny Purwanto*/
 namespace CaesarCipher
 {
     public class Program
     {
-        private static readonly string textFile = @"F:\Cryptography\Assignment1\CaesarCipher\samsung.txt";
-        private static readonly string textFileDecrypted = @"F:\Cryptography\Assignment1\CaesarCipher\encrypted.txt";
+        private static readonly string textFile = @"C:\CeasarCipher\samsung.txt";
+        private static readonly string textFileDecrypted = @"C:\CaesarCipher\encrypted.txt";
         public static string TextFile => textFile;
         public static string TextFileDecrypted => textFileDecrypted;
 
@@ -42,12 +43,14 @@ namespace CaesarCipher
                         Console.Write(">> ");
                         userTextInput = Console.ReadLine();
                         Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
-                        CaesarEncryptionEngine(userTextInput, Int32.Parse(userKey));
+                        Console.WriteLine(CaesarEncryptionEngine(userTextInput, Int32.Parse(userKey)));
                     }else{
                         Console.WriteLine("\nProgram is using a stored file called: samsung.txt");
                         Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
                         string eFullText = TextFileReader(TextFile);
-                        CaesarEncryptionEngine(eFullText, Int32.Parse(userKey));
+                        var encrypted = CaesarEncryptionEngine(eFullText, Int32.Parse(userKey));
+                        Console.WriteLine(encrypted);
+                        StoreFile(encrypted);
                     }
                     
                 }else if (userChoice == "d"){
@@ -59,13 +62,18 @@ namespace CaesarCipher
                         Console.Write(">> ");
                         userTextInput = Console.ReadLine();
                         Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
-                        CaesarDecryptionEngine(userTextInput, Int32.Parse(userKey));
+                        var encrypted = CaesarDecryptionEngine(userTextInput, Int32.Parse(userKey));
+                        Console.WriteLine(encrypted);
+                        StoreFile(encrypted);
                     }
                     else{
                         Console.WriteLine("\nProgram is using a stored file called: encrypted.txt");
                         Console.WriteLine("\n----- RESULT -------------------------------------------------\n");
                         string dFullText = TextFileReader(TextFileDecrypted);
-                        CaesarDecryptionEngine(dFullText, Int32.Parse(userKey));
+                        var encrypted = CaesarDecryptionEngine(dFullText, Int32.Parse(userKey));
+                        Console.WriteLine(encrypted);
+                        StoreFile(encrypted);
+                        
                     }
                 }
                 
@@ -87,7 +95,7 @@ namespace CaesarCipher
             return outText;
         }
 
-        private static void CaesarEncryptionEngine(string fullText, int key)
+        private static string CaesarEncryptionEngine(string fullText, int key)
         {
             var charToIntInAscii = 0;
             List<char> resultText = new List<char>();
@@ -105,12 +113,16 @@ namespace CaesarCipher
                 resultText.Add(singleLetter);
             }
 
+            var encrypted = new StringBuilder();
+
             foreach (var letter in resultText){
-                Console.Write(letter);
+                encrypted.Append(letter);
             }
+
+            return encrypted.ToString();
         }
 
-        private static void CaesarDecryptionEngine(string fullText, int key)
+        private static string CaesarDecryptionEngine(string fullText, int key)
         {
             var charToIntInAscii = 0;
             List<char> resultText = new List<char>();
@@ -123,9 +135,18 @@ namespace CaesarCipher
                 resultText.Add(singleLetter);
             }
 
-            foreach (var letter in resultText){
-                Console.Write(letter);
+            var decrypted = new StringBuilder();
+            foreach (var letter in resultText)
+            {
+                decrypted.Append(letter);
             }
+
+            return decrypted.ToString();
+        }
+
+        private static void StoreFile(string encrypted)
+        {
+            System.IO.File.WriteAllText(@"C:\CeasarCipher\encrypted.txt", encrypted);
         }
     }
 }
