@@ -11,10 +11,17 @@ namespace NoKeyDecipher
             var end = false;
             while (!end)
             {
-                Console.WriteLine("Please type in location of desired file to decrypt: ");
-                var fPath = Console.ReadLine();
                 //var fPath = "C:\\emus\\code.txt";
+                var fPath = "File Path";
+
+                while (!File.Exists(fPath))
+                {
+                    Console.WriteLine("Please type in location of desired file to decrypt: ");
+                    fPath = Console.ReadLine();
+                }
+                
                 var text = File.ReadLines(fPath);
+
 
 
                 var encryptedText = string.Join(",", text.ToArray()).ToLower();
